@@ -1,5 +1,5 @@
 # Machine_Learning_Final_Project
-Pues lo que lees, ni idea
+We predict claim frequency for auto policies. The target is ClaimNb (number of claims). We account for different policy durations using Exposure.
 
 Elena Linares, Rubén Coloma.
 
