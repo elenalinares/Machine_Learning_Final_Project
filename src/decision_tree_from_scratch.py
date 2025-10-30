@@ -112,7 +112,7 @@ class DecisionTreeRegressorScratch:
         Return dict with best feature, threshold, and impurity decrease, or None if no split.
         """
         n_samples, n_features = X.shape
-        parent_mse = self.mse(y)
+        parent_mse = self._mse(y)
         best = None
 
         for j in range(n_features):
@@ -122,7 +122,7 @@ class DecisionTreeRegressorScratch:
             y_sorted = y[order]
 
             #possible thresholds are midpoints between distinct adjacent values
-            distinct = np.where(np.diff(x_sorted))
+            distinct = np.where(np.diff(x_sorted) > 0)[0]
             if distinct.size == 0:
                 continue
 
@@ -161,6 +161,8 @@ class DecisionTreeRegressorScratch:
                     best = {
                         "feature_idx" : j,
                         "threshold": thr,
-                        
+                        "impurity_decrease" : float(impurity_decrease),
                        
                     }
+
+        return best
