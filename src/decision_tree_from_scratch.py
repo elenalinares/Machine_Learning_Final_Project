@@ -18,7 +18,7 @@ class _Node:
 
 class DecisionTreeRegressorScratch:
     """
-    simple CART-style regression tree (MSE impurtity) implemented with NumPy only --> at each split it picks the rule that reduces mse the most
+    simple CART (Classification And Regression Trees)-style regression tree (MSE impurtity) implemented with NumPy only --> at each split it picks the rule that reduces mse the most
 
     --------------------------
 
