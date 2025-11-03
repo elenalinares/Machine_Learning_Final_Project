@@ -31,7 +31,7 @@ class NeuralNetworkRegressorScratch:
 
     def fit(self, X, y):
         X = np.asarray(X, dtype = float)
-        y = np.asarray(y, dtype = float)
+        y = np.asarray(y, dtype = float).reshape(-1, 1)
 
         n_samples, n_features = X.shape
 
