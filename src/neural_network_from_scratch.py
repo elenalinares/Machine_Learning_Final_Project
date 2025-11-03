@@ -4,7 +4,7 @@
 import numpy as np
 
 class NeuralNetworkRegressorScratch:
-    def __init__(self, n_hidden = (16), learning_rate = 0.001, n_epochs = 200, random_state = None):
+    def __init__(self, n_hidden = (16), learning_rate = 0.01, n_epochs = 100, random_state = None):
         """
         This is a simple 1-hidden-layer neural network regressor.
 
