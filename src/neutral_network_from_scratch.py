@@ -4,7 +4,7 @@
 import numpy as np
 
 class NeuralNetworkRegressorScratch:
-    def __init__(self, n_hidden = 10, learning_rate = 0.01, n_epochs = 100, random_state = None):
+    def __init__(self, n_hidden = (16, 8), learning_rate = 0.001, n_epochs = 200, random_state = None):
         """
         This is a simple 1-hidden-layer neural network regressor.
 
@@ -39,4 +39,46 @@ class NeuralNetworkRegressorScratch:
         self.W1 = np.random.randn(n_features, self.n_hidden) * 0.01
         self.b1 = np.zeros((1, self.n_hidden))
         self.W2 = np.random.randn(self.n_hidden, 1) * 0.01
-        self.b2 = np.zeros((1,1))       
+        self.b2 = np.zeros((1,1))
+
+    #training loop
+        for epoch in range(self.n_epochs):
+            #--- Forward pass
+            Z1 = X.dot(self.W1) + self.b1
+            A1 = self._relu(Z1)       
+            Z2 = A1.dot(self.W2) + self.b2
+            y_pred = Z2 #linear output for regression
+
+            #--- MSE
+            loss = np.mean((y - y_pred) **2)
+
+            #--- gradients 
+            dZ2 = 2 * (y_pred - y) / n_samples
+            dW2 = A1.T.dot(dZ2)
+            db2 = np.sum(dZ2, axis=0, keepdims=True)
+
+            dA1 = dZ2.dot(self.W2.T)
+            dZ1 = dA1 * self._relu_deriv(Z1)
+            dW1 = X.T.dot(dZ1)
+            db1 = np.sum(dZ1, axis=0, keepdims=True)
+
+            #--- update the wights
+            self.W1 -= self.learning_rate * dW1
+            self.b1 -= self.learning_rate * db1
+            self.W2 -= self.learning_rate * dW2
+            self.b2 -= self.learning_rate * db2
+
+            #--- print the progress made every 10 iterations
+            if epoch % 10 == 0:
+                print(f"Epoch {epoch}, Loss: {loss:.5f}")
+
+        return self
+    
+
+    def predict(self, X):
+        X = np.asarray(X, dtype=float)
+        Z1 = X.dot(self.W1) + self.b1
+        A1 = self._relu(Z1)
+        Z2 = A1.dot(self.W2) + self.b2
+        return Z2.ravel()
+
