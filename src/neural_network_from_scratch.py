@@ -50,9 +50,8 @@ class NeuralNetworkRegressorScratch:
             y_pred = Z2 #linear output for regression
 
             #--- MSE
-            print("DEBUG shapes:", y.shape, y_pred.shape)
+            
             diff = y - y_pred
-            print("DEBUG diff shape:", diff.shape)
             loss = np.mean(diff ** 2)
             loss = np.mean((y - y_pred) **2)
 
