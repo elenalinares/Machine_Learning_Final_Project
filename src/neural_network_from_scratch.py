@@ -71,10 +71,6 @@ class NeuralNetworkRegressorScratch:
             self.W2 -= self.learning_rate * dW2
             self.b2 -= self.learning_rate * db2
 
-            #--- print the progress made every 10 iterations
-            if epoch % 10 == 0:
-                print(f"Epoch {epoch}, Loss: {loss:.5f}")
-
         return self
     
 
