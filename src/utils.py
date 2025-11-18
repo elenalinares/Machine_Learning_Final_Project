@@ -4,7 +4,10 @@ import numpy as np
 import joblib
 from sklearn.preprocessing import OrdinalEncoder
 from sklearn.model_selection import train_test_split
-import lightgbm as lgb
+try:
+    import lightgbm as lgb
+except ImportError as e:
+    raise ImportError("lightgbm not installed. Run: conda install -c conda-forge lightgbm") from e
 from sklearn.metrics import mean_squared_error, mean_absolute_error
 
 # ---- I/O helpers ----
