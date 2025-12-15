@@ -4,7 +4,7 @@
 import numpy as np
 
 class NeuralNetworkRegressorScratch:
-    def __init__(self, n_hidden = (10), learning_rate = 0.01, n_epochs = 100, random_state = None):
+    def __init__(self, n_hidden = 10, learning_rate = 0.01, n_epochs = 100, random_state = None):
         """
         This is a simple 1-hidden-layer neural network regressor.
 
@@ -22,14 +22,31 @@ class NeuralNetworkRegressorScratch:
 
 
     def _relu(self, z):
+        """ReLU activation function."""
         return np.maximum(0, z)
     
 
     def _relu_deriv(self, z):
+        """Derivative of ReLU activation."""
         return (z > 0).astype(float)
     
 
     def fit(self, X, y):
+        """
+        Train the neural network on the provided data.
+
+        Parameters
+        ----------
+        X : np.ndarray of shape (n_samples, n_features)
+            Training feature matrix.
+        y : np.ndarray of shape (n_samples,)
+            Target values.
+
+        Returns
+        -------
+        self : NeuralNetworkRegressorScratch
+            Trained model.
+        """
         X = np.asarray(X, dtype = float)
         y = np.asarray(y, dtype = float).reshape(-1, 1)
 
@@ -52,8 +69,8 @@ class NeuralNetworkRegressorScratch:
             #--- MSE
             
             diff = y - y_pred
-            loss = np.mean(diff ** 2)
-            loss = np.mean((y - y_pred) **2)
+            loss = np.mean((y - y_pred) ** 2)
+
 
             #--- gradients 
             dZ2 = 2 * (y_pred - y) / n_samples
@@ -75,6 +92,20 @@ class NeuralNetworkRegressorScratch:
     
 
     def predict(self, X):
+        """
+        Predict target values for input samples.
+
+        Parameters
+        ----------
+        X : np.ndarray of shape (n_samples, n_features)
+            Input feature matrix.
+
+        Returns
+        -------
+        preds : np.ndarray of shape (n_samples,)
+            Predicted target values.
+        """
+
         X = np.asarray(X, dtype=float)
         Z1 = X.dot(self.W1) + self.b1
         A1 = self._relu(Z1)
