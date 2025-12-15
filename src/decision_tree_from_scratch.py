@@ -18,8 +18,10 @@ class _Node:
 
 class DecisionTreeRegressorScratch:
     """
-    simple CART (Classification And Regression Trees)-style regression tree (MSE impurtity) implemented with NumPy only --> at each split it picks the rule that reduces mse the most
+    simple CART (Classification And Regression Trees)-style regression tree (MSE impurtity) implemented with NumPy only 
+    --> at each split it picks the rule that reduces mse the most
 
+    The tree predicts continuous targets by recursively partitioning the feature space and predicting the mean target value in each leaf.
     --------------------------
 
     We'll use these parameters:
@@ -36,6 +38,9 @@ class DecisionTreeRegressorScratch:
     """
 
     def __init__(self, max_depth = 5, min_samples_split = 20, min_impurity_decrease = 1e-7, random_state =None):
+        #The parameters chosen for this function are chosen to avoid overfitting, they are kinda default, nothing risky
+
+
         self.max_depth = int(max_depth)
         self.min_samples_split = int(min_samples_split)
         self.min_impurity_decrease = float(min_impurity_decrease)
@@ -63,6 +68,21 @@ class DecisionTreeRegressorScratch:
 # --- public API -----------------------------------------------------------------
 
     def fit(self, X: np.ndarray, y: np.ndarray):
+        """
+        Fit the decision tree to training data.
+
+        Parameters
+        ----------
+        X : np.ndarray of shape (n_samples, n_features)
+            Training feature matrix.
+        y : np.ndarray of shape (n_samples,)
+            Target values.
+
+        Returns
+        -------
+        self : DecisionTreeRegressorScratch
+            Fitted model.
+        """
         X = np.asarray(X, dtype = float)
         y = np.asarray(y, dtype = float).reshape (-1)
         assert X.shape[0] == y.shape[0], "X and y need to be the same lenght, same amount of rows"
@@ -70,6 +90,19 @@ class DecisionTreeRegressorScratch:
         return self
     
     def predict(self, X:np.ndarray) -> np.ndarray:
+        """
+        Predict target values for input samples.
+
+        Parameters
+        ----------
+        X : np.ndarray of shape (n_samples, n_features)
+            Input feature matrix.
+
+        Returns
+        -------
+        preds : np.ndarray of shape (n_samples,)
+            Predicted target values.
+        """
         X = np.asarray(X, dtype = float)
         preds =np.array([self._predict_one(x, self.root_) for x in X], dtype =float)
         return preds
