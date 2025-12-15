@@ -12,6 +12,23 @@ from sklearn.metrics import mean_squared_error, mean_absolute_error
 
 # ---- I/O helpers ----
 def load_data(train_path="../data/claims_train.csv", test_path="../data/claims_test.csv"):
+    """
+    Load training and test datasets from CSV files.
+
+    Parameters
+    ----------
+    train_path : str
+        Path to the training CSV file.
+    test_path : str
+        Path to the test CSV file.
+
+    Returns
+    -------
+    train : pandas.DataFrame
+        Training dataset.
+    test : pandas.DataFrame or None
+        Test dataset if available, otherwise None.
+    """
     train = pd.read_csv(train_path)
     try:
         test = pd.read_csv(test_path)
@@ -22,24 +39,90 @@ def load_data(train_path="../data/claims_train.csv", test_path="../data/claims_t
 #this one just makes sures you got the dataset
 
 def save_model(model, path="models/lightgbm_model.joblib"):
+    """
+    Save a trained model to disk using joblib.
+
+    Parameters
+    ----------
+    model : object
+        Trained model object to be saved.
+    path : str
+        File path where the model will be stored.
+
+    Returns
+    -------
+    path : str
+        Path to the saved model file.
+    """
     joblib.dump(model, path)
     return path
 
 def load_model(path="models/lightgbm_model.joblib"):
+    """
+    Load a previously saved model from disk.
+
+    Parameters
+    ----------
+    path : str
+        Path to the saved model file.
+
+    Returns
+    -------
+    model : object
+        Loaded model object.
+    """
     return joblib.load(path)
 
 #these just save and load traned model - useful for reproducibility and for sharing results
 
 # ---- evaluation ----
 def poisson_deviance(y_true, y_pred, eps=1e-9):
+    """
+    Compute the mean Poisson deviance between true and predicted counts.
+
+    This metric is appropriate for count data and is commonly used in
+    insurance claim frequency modeling. Lower values indicate better fit.
+
+    Parameters
+    ----------
+    y_true : array-like
+        True observed counts.
+    y_pred : array-like
+        Predicted expected counts.
+    eps : float
+        Small constant to avoid numerical issues with log(0).
+
+    Returns
+    -------
+    deviance : float
+        Mean Poisson deviance.
+    """
     y_true = np.asarray(y_true, dtype=float)
     y_pred = np.maximum(np.asarray(y_pred, dtype=float), eps)
     term = y_true * np.log((y_true + eps) / y_pred) - (y_true - y_pred)
     return 2.0 * np.mean(term)
-#Poisson deviance is the loss appropiate for count data - this computes a mean deviance (smaller = better)
+
 
 
 def evaluate_counts(y_true, y_pred):
+    """
+    Evaluate predicted counts against true counts using multiple metrics.
+
+    Computes RMSE, MAE, Poisson deviance, and total observed vs predicted counts.
+
+    Parameters
+    ----------
+    y_true : array-like
+        True observed counts.
+    y_pred : array-like
+        Predicted expected counts.
+
+    Returns
+    -------
+    metrics : dict
+        Dictionary containing RMSE, MAE, Poisson deviance,
+        total observed counts, and total predicted counts.
+    """
     return {
         "rmse": float(np.sqrt(mean_squared_error(y_true, y_pred))),
         "mae": float(mean_absolute_error(y_true, y_pred)),
