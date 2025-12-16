@@ -15,15 +15,15 @@ def load_data(train_path="../data/claims_train.csv", test_path="../data/claims_t
     """
     Load training and test datasets from CSV files.
 
-    Parameters
-    ----------
+    Parameters----------
+    
     train_path : str
         Path to the training CSV file.
     test_path : str
         Path to the test CSV file.
 
-    Returns
-    -------
+    Returns-------
+    
     train : pandas.DataFrame
         Training dataset.
     test : pandas.DataFrame or None
@@ -42,15 +42,15 @@ def save_model(model, path="models/lightgbm_model.joblib"):
     """
     Save a trained model to disk using joblib.
 
-    Parameters
-    ----------
+    Parameters----------
+    
     model : object
         Trained model object to be saved.
     path : str
         File path where the model will be stored.
 
-    Returns
-    -------
+    Returns-------
+    
     path : str
         Path to the saved model file.
     """
@@ -61,13 +61,13 @@ def load_model(path="models/lightgbm_model.joblib"):
     """
     Load a previously saved model from disk.
 
-    Parameters
-    ----------
+    Parameters----------
+    
     path : str
         Path to the saved model file.
 
-    Returns
-    -------
+    Returns-------
+    
     model : object
         Loaded model object.
     """
@@ -83,8 +83,8 @@ def poisson_deviance(y_true, y_pred, eps=1e-9):
     This metric is appropriate for count data and is commonly used in
     insurance claim frequency modeling. Lower values indicate better fit.
 
-    Parameters
-    ----------
+    Parameters----------
+    
     y_true : array-like
         True observed counts.
     y_pred : array-like
@@ -92,8 +92,8 @@ def poisson_deviance(y_true, y_pred, eps=1e-9):
     eps : float
         Small constant to avoid numerical issues with log(0).
 
-    Returns
-    -------
+    Returns-------
+    
     deviance : float
         Mean Poisson deviance.
     """
@@ -110,15 +110,15 @@ def evaluate_counts(y_true, y_pred):
 
     Computes RMSE, MAE, Poisson deviance, and total observed vs predicted counts.
 
-    Parameters
-    ----------
+    Parameters----------
+    
     y_true : array-like
         True observed counts.
     y_pred : array-like
         Predicted expected counts.
 
-    Returns
-    -------
+    Returns-------
+    
     metrics : dict
         Dictionary containing RMSE, MAE, Poisson deviance,
         total observed counts, and total predicted counts.
@@ -148,7 +148,18 @@ def preprocess_train(df,
       - Fill numeric NA with median, categorical NA with "MISSING"
       - Detect categorical columns
       - Fit an OrdinalEncoder and return encoder (for re-use on test)
-    Returns: X (DataFrame), y (Series), encoder, cat_cols, num_cols
+
+    Returns-------
+        X : pandas.DataFrame
+            Preprocessed feature matrix.
+        y : pandas.Series
+            Target variable.
+        encoder : OrdinalEncoder or None
+            Fitted encoder for categorical features.
+        cat_cols : list
+            Names of categorical feature columns.
+        num_cols : list
+            Names of numerical feature columns.
     """
     df = df.copy()
     if id_cols is None:
@@ -188,6 +199,9 @@ def preprocess_train(df,
 def preprocess_test(df, encoder, features, cat_cols, num_cols, exposure_col="Exposure", exposure_cap=1.0):
     """
     Apply same transforms to test set. Returns X_test DataFrame.
+
+    Uses the encoder fitted on the training data to ensure consistent
+    categorical encoding.
     """
     df = df.copy()
     df["Exposure_orig"] = df[exposure_col]
@@ -212,4 +226,11 @@ def preprocess_test(df, encoder, features, cat_cols, num_cols, exposure_col="Exp
 
 # ---- train/val split helper ----
 def get_train_val_split(X, y, test_size=0.2, random_state=42):
+    """
+    Split data into training and validation sets.
+
+    Returns-------
+    X_train, X_val, y_train, y_val : tuple
+        Split datasets.
+    """
     return train_test_split(X, y, test_size=test_size, random_state=random_state)
