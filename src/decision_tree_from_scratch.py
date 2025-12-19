@@ -26,13 +26,13 @@ class DecisionTreeRegressorScratch:
 
     We'll use these parameters:
 
-    max_depth : int
+    max_depth: int
         Maximum depth of our tree, >= 1
     
-    min_samples_split : int
+    min_samples_split: int
         Minimum sumber of samples required to split a node
 
-    min_impurity_decrease : float
+    min_impurity_decrease: float
         Minimum required reduction in MSE to accept a split
 
     """
@@ -105,7 +105,7 @@ class DecisionTreeRegressorScratch:
     
 # --- core recursive builder ----------------------------------------------------
     def _build_tree(self, X: np.ndarray, y: np.ndarray, depth:int) -> _Node:
-        #it stops when, reches end, too few samples, no useful split
+        #it stops when reches end, too few samples, no useful split
         if (depth >= self.max_depth) or (X.shape[0] < self.min_samples_split):
             return self._leaf(y)
         
@@ -137,8 +137,8 @@ class DecisionTreeRegressorScratch:
 
     def _best_split(self, X: np.ndarray, y: np.ndarray):
         """
-        Try all features. For each feature, consider thresholds between sorted unique values.
-        Return dict with best feature, threshold, and impurity decrease, or None if no split.
+        Try all features. For each feature consider thresholds between sorted unique values.
+        Return dict with best feature, threshold, and impurity decrease or None if no split.
         """
         n_samples, n_features = X.shape
         parent_mse = self._mse(y)
@@ -155,7 +155,7 @@ class DecisionTreeRegressorScratch:
             if distinct.size == 0:
                 continue
 
-            #prefix sums to compute L/R means & MSE fast
+            #prefix sums to compute L/R means and MSE fast
             #cumulative sums and cumulative sums of squares
             csum = np.cumsum(y_sorted)
             csum2 = np.cumsum(y_sorted**2)
