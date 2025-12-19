@@ -91,14 +91,12 @@ class DecisionTreeRegressorScratch:
         """
         Predict target values for input samples.
 
-        Parameters
-        ----------
-        X : np.ndarray of shape (n_samples, n_features)
+        Parameters:
+        X: np.ndarray of shape (n_samples, n_features)
             Input feature matrix.
 
-        Returns
-        -------
-        preds : np.ndarray of shape (n_samples,)
+        Returns:
+        preds: np.ndarray of shape (n_samples,)
             Predicted target values.
         """
         X = np.asarray(X, dtype = float)
