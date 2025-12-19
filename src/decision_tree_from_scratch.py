@@ -68,7 +68,19 @@ class DecisionTreeRegressorScratch:
 # --- public API -----------------------------------------------------------------
 
     def fit(self, X: np.ndarray, y: np.ndarray):
-        
+        """
+        Fit the decision tree to training data.
+
+        Parameters:
+        X: np.ndarray of shape (n_samples, n_features)
+            Training feature matrix.
+        y: np.ndarray of shape (n_samples,)
+            Target values.
+
+        Returns:
+        self: DecisionTreeRegressorScratch
+            Fitted model.
+        """
         X = np.asarray(X, dtype = float)
         y = np.asarray(y, dtype = float).reshape (-1)
         assert X.shape[0] == y.shape[0], "X and y need to be the same lenght, same amount of rows"
