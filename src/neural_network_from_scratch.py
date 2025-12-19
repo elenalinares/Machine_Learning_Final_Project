@@ -6,7 +6,7 @@ import numpy as np
 class NeuralNetworkRegressorScratch:
     def __init__(self, n_hidden = 10, learning_rate = 0.01, n_epochs = 100, random_state = None):
         """
-        This is a simple 1-hidden-layer neural network regressor.
+        This is a simple 1 hidden layer neural network regressor.
 
         n_hidden: number of neurons in the hidden layer
         learning_rate: step size for gradient descennt
@@ -22,16 +22,20 @@ class NeuralNetworkRegressorScratch:
 
 
     def _relu(self, z):
+        # keeps positives, kills negatives
         """ReLU activation function."""
         return np.maximum(0, z)
     
 
     def _relu_deriv(self, z):
+        # ReLU derivative: 1 if z>0, else 0
         """Derivative of ReLU activation."""
         return (z > 0).astype(float)
     
 
     def fit(self, X, y):
+        # convert input to numpy arrays and fix shapes
+
         """
         Train the neural network on the provided data.
 
@@ -95,14 +99,12 @@ class NeuralNetworkRegressorScratch:
         """
         Predict target values for input samples.
 
-        Parameters
-        ----------
-        X : np.ndarray of shape (n_samples, n_features)
+        Parameters:
+        X: np.ndarray of shape (n_samples, n_features)
             Input feature matrix.
 
-        Returns
-        -------
-        preds : np.ndarray of shape (n_samples,)
+        Returns:
+        preds: np.ndarray of shape (n_samples,)
             Predicted target values.
         """
 
